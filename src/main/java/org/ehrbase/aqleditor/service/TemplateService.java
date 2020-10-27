@@ -18,7 +18,11 @@
  */
 package org.ehrbase.aqleditor.service;
 
+import lombok.AllArgsConstructor;
 import org.ehrbase.aqleditor.dto.TemplateDto;
+import org.ehrbase.webtemplate.filter.Filter;
+import org.ehrbase.webtemplate.model.WebTemplate;
+import org.ehrbase.webtemplate.parser.OPTParser;
 import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +31,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TemplateService {
 
-  private TestDataTemplateProvider testDataTemplateProvider = new TestDataTemplateProvider();
+  private static final TestDataTemplateProvider testDataTemplateProvider = new TestDataTemplateProvider();
 
   public List<TemplateDto> getAll() {
     return testDataTemplateProvider.listTemplateIds().stream()
@@ -40,6 +45,11 @@ public class TemplateService {
             .collect(Collectors.toList());
   }
 
+
+  public WebTemplate getWebTemplate(String templateId) {
+    return testDataTemplateProvider.find(templateId).map(o -> new OPTParser(o).parse()).map(w -> new Filter().filter(w)).orElse(null);
+  }
+
   private TemplateDto map(OPERATIONALTEMPLATE operationaltemplate) {
     TemplateDto templateDto = new TemplateDto();
     templateDto.setTemplateId(operationaltemplate.getTemplateId().getValue());
@@ -47,4 +57,5 @@ public class TemplateService {
             operationaltemplate.getDescription().getDetailsArray()[0].getPurpose());
     return templateDto;
   }
+
 }

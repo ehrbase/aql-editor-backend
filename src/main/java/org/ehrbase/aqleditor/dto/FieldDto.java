@@ -22,9 +22,9 @@ package org.ehrbase.aqleditor.dto;
 import lombok.Data;
 
 @Data
-public class TemplateDto {
-
-    private String templateId;
-    private String description;
-
+public class FieldDto {
+  private String name;
+  private String rmType;
+  private String aqlPath;
+  private String humanReadablePath;
 }

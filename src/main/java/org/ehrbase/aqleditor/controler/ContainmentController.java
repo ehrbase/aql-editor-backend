@@ -20,28 +20,26 @@
 package org.ehrbase.aqleditor.controler;
 
 import lombok.AllArgsConstructor;
-import org.ehrbase.aqleditor.dto.TemplateDto;
-import org.ehrbase.aqleditor.service.TemplateService;
+import org.ehrbase.aqleditor.dto.ContainmentDto;
+import org.ehrbase.aqleditor.service.ContainmentService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(
-        path = "/rest/v1/template",
+        path = "/rest/v1/containment",
         produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
-public class TemplateController {
+public class ContainmentController {
 
-  private final TemplateService templateService;
+    private final ContainmentService containmentService;
 
-
-  @GetMapping
-  public ResponseEntity<List<TemplateDto>> getAll() {
-    return ResponseEntity.ok(templateService.getAll());
-  }
+    @GetMapping(path = "{templateId}")
+    public ResponseEntity<ContainmentDto> getByTEmplateId(@PathVariable(value = "templateId") String templateId) {
+        return ResponseEntity.ok(containmentService.buildContainment(templateId));
+    }
 }
