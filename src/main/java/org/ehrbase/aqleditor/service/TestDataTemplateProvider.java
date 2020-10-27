@@ -32,23 +32,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TestDataTemplateProvider implements TemplateProvider {
-    @Override
-    public Optional<OPERATIONALTEMPLATE> find(String templateId) {
-        return Optional.ofNullable(OperationalTemplateTestData.findByTemplateId(templateId))
-                .map(OperationalTemplateTestData::getStream)
-                .map(s -> {
-                    try {
-                        return TemplateDocument.Factory.parse(s);
-                    } catch (XmlException | IOException e) {
-                        throw new RuntimeException(e.getMessage(), e);
-                    }
-                })
-                .map(TemplateDocument::getTemplate);
-    }
+  @Override
+  public Optional<OPERATIONALTEMPLATE> find(String templateId) {
+    return Optional.ofNullable(OperationalTemplateTestData.findByTemplateId(templateId))
+        .map(OperationalTemplateTestData::getStream)
+        .map(
+            s -> {
+              try {
+                return TemplateDocument.Factory.parse(s);
+              } catch (XmlException | IOException e) {
+                throw new RuntimeException(e.getMessage(), e);
+              }
+            })
+        .map(TemplateDocument::getTemplate);
+  }
 
-    public List<String> listTemplateIds() {
-        return Arrays.stream(OperationalTemplateTestData.values())
-                .map(OperationalTemplateTestData::getTemplateId)
-                .collect(Collectors.toList());
-    }
+  public List<String> listTemplateIds() {
+    return Arrays.stream(OperationalTemplateTestData.values())
+        .map(OperationalTemplateTestData::getTemplateId)
+        .collect(Collectors.toList());
+  }
 }

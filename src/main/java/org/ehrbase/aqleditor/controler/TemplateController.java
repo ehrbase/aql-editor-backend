@@ -32,13 +32,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping(
-        path = "/rest/v1/template",
-        produces = {MediaType.APPLICATION_JSON_VALUE})
+    path = "/rest/v1/template",
+    produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class TemplateController {
 
   private final TemplateService templateService;
-
 
   @GetMapping
   public ResponseEntity<List<TemplateDto>> getAll() {

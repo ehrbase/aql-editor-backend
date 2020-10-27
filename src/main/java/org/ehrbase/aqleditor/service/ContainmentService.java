@@ -41,75 +41,76 @@ import java.util.Iterator;
 @AllArgsConstructor
 public class ContainmentService {
 
-    public static final ArchieRMInfoLookup ARCHIE_RM_INFO_LOOKUP = ArchieRMInfoLookup.getInstance();
+  public static final ArchieRMInfoLookup ARCHIE_RM_INFO_LOOKUP = ArchieRMInfoLookup.getInstance();
 
-    private TemplateService templateService;
+  private TemplateService templateService;
 
-    public ContainmentDto buildContainment(String templateId) {
+  public ContainmentDto buildContainment(String templateId) {
 
-        WebTemplate webTemplate = templateService.getWebTemplate(templateId);
-        Context context = new Context();
+    WebTemplate webTemplate = templateService.getWebTemplate(templateId);
+    Context context = new Context();
 
-        handleNext(context, webTemplate.getTree());
+    handleNext(context, webTemplate.getTree());
 
-        return context.containmentQueue.getFirst();
-    }
+    return context.containmentQueue.getFirst();
+  }
 
-    private void handleNext(Context context, WebTemplateNode childNode) {
-        if (visitChildren(childNode)) {
-            if (context.containmentQueue.isEmpty() || (childNode.getNodeId() != null && !childNode.getNodeId().startsWith("at"))) {
-                ContainmentDto containmentDto = new ContainmentDto();
-                containmentDto.setArchetypeId(childNode.getNodeId());
-                if (!context.containmentQueue.isEmpty()) {
-                    context.containmentQueue.peek().getChildren().add(containmentDto);
-                }
-                context.containmentQueue.push(containmentDto);
-                context.aqlQueue.push(childNode.getAqlPath());
-                context.nodeQueue.push(childNode);
-                childNode.getChildren().forEach(n -> handleNext(context, n));
-                context.nodeQueue.remove();
-                context.aqlQueue.remove();
-                if (context.containmentQueue.size() > 1) {
-                    context.containmentQueue.remove();
-                }
-            }
-        } else {
-            FieldDto fieldDto = new FieldDto();
-            fieldDto.setName(childNode.getName());
-            fieldDto.setRmType(childNode.getRmType());
-            String relativAql = StringUtils.removeStart(childNode.getAqlPath(), context.aqlQueue.peek());
-            fieldDto.setAqlPath(new FlatPath(relativAql).format(false));
-            context.nodeQueue.push(childNode);
-            fieldDto.setHumanReadablePath(buildHumanReadablePath(context));
-            context.containmentQueue.peek().getFields().add(fieldDto);
-            context.nodeQueue.remove();
-
+  private void handleNext(Context context, WebTemplateNode childNode) {
+    if (visitChildren(childNode)) {
+      if (context.containmentQueue.isEmpty()
+          || (childNode.getNodeId() != null && !childNode.getNodeId().startsWith("at"))) {
+        ContainmentDto containmentDto = new ContainmentDto();
+        containmentDto.setArchetypeId(childNode.getNodeId());
+        if (!context.containmentQueue.isEmpty()) {
+          context.containmentQueue.peek().getChildren().add(containmentDto);
         }
-    }
-
-    private String buildHumanReadablePath(Context context) {
-        StringBuilder sb = new StringBuilder();
-        for (Iterator<WebTemplateNode> iterator = context.nodeQueue.descendingIterator(); iterator.hasNext(); ) {
-            WebTemplateNode node = iterator.next();
-            sb.append(node.getId());
-            if (iterator.hasNext()) {
-                sb.append("/");
-            }
+        context.containmentQueue.push(containmentDto);
+        context.aqlQueue.push(childNode.getAqlPath());
+        context.nodeQueue.push(childNode);
+        childNode.getChildren().forEach(n -> handleNext(context, n));
+        context.nodeQueue.remove();
+        context.aqlQueue.remove();
+        if (context.containmentQueue.size() > 1) {
+          context.containmentQueue.remove();
         }
-        return sb.toString();
+      }
+    } else {
+      FieldDto fieldDto = new FieldDto();
+      fieldDto.setName(childNode.getName());
+      fieldDto.setRmType(childNode.getRmType());
+      String relativAql = StringUtils.removeStart(childNode.getAqlPath(), context.aqlQueue.peek());
+      fieldDto.setAqlPath(new FlatPath(relativAql).format(false));
+      context.nodeQueue.push(childNode);
+      fieldDto.setHumanReadablePath(buildHumanReadablePath(context));
+      context.containmentQueue.peek().getFields().add(fieldDto);
+      context.nodeQueue.remove();
     }
+  }
 
-    protected boolean visitChildren(WebTemplateNode node) {
-        RMTypeInfo typeInfo = ARCHIE_RM_INFO_LOOKUP.getTypeInfo(node.getRmType());
-        return typeInfo != null
-                && (Locatable.class.isAssignableFrom(typeInfo.getJavaClass())
-                || EventContext.class.isAssignableFrom(typeInfo.getJavaClass())
-                || DvInterval.class.isAssignableFrom(typeInfo.getJavaClass()));
+  private String buildHumanReadablePath(Context context) {
+    StringBuilder sb = new StringBuilder();
+    for (Iterator<WebTemplateNode> iterator = context.nodeQueue.descendingIterator();
+        iterator.hasNext(); ) {
+      WebTemplateNode node = iterator.next();
+      sb.append(node.getId());
+      if (iterator.hasNext()) {
+        sb.append("/");
+      }
     }
+    return sb.toString();
+  }
 
-    private class Context {
-        Deque<WebTemplateNode> nodeQueue = new ArrayDeque<>();
-        Deque<ContainmentDto> containmentQueue = new ArrayDeque<>();
-        Deque<String> aqlQueue = new ArrayDeque<>();
-    }
+  protected boolean visitChildren(WebTemplateNode node) {
+    RMTypeInfo typeInfo = ARCHIE_RM_INFO_LOOKUP.getTypeInfo(node.getRmType());
+    return typeInfo != null
+        && (Locatable.class.isAssignableFrom(typeInfo.getJavaClass())
+            || EventContext.class.isAssignableFrom(typeInfo.getJavaClass())
+            || DvInterval.class.isAssignableFrom(typeInfo.getJavaClass()));
+  }
+
+  private class Context {
+    Deque<WebTemplateNode> nodeQueue = new ArrayDeque<>();
+    Deque<ContainmentDto> containmentQueue = new ArrayDeque<>();
+    Deque<String> aqlQueue = new ArrayDeque<>();
+  }
 }

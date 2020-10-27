@@ -31,15 +31,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
-        path = "/rest/v1/containment",
-        produces = {MediaType.APPLICATION_JSON_VALUE})
+    path = "/rest/v1/containment",
+    produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class ContainmentController {
 
-    private final ContainmentService containmentService;
+  private final ContainmentService containmentService;
 
-    @GetMapping(path = "{templateId}")
-    public ResponseEntity<ContainmentDto> getByTEmplateId(@PathVariable(value = "templateId") String templateId) {
-        return ResponseEntity.ok(containmentService.buildContainment(templateId));
-    }
+  @GetMapping(path = "{templateId}")
+  public ResponseEntity<ContainmentDto> getByTEmplateId(
+      @PathVariable(value = "templateId") String templateId) {
+    return ResponseEntity.ok(containmentService.buildContainment(templateId));
+  }
 }

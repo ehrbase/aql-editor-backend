@@ -34,28 +34,31 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TemplateService {
 
-  private static final TestDataTemplateProvider testDataTemplateProvider = new TestDataTemplateProvider();
+  private static final TestDataTemplateProvider testDataTemplateProvider =
+      new TestDataTemplateProvider();
 
   public List<TemplateDto> getAll() {
     return testDataTemplateProvider.listTemplateIds().stream()
-            .map(testDataTemplateProvider::find)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(this::map)
-            .collect(Collectors.toList());
+        .map(testDataTemplateProvider::find)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .map(this::map)
+        .collect(Collectors.toList());
   }
 
-
   public WebTemplate getWebTemplate(String templateId) {
-    return testDataTemplateProvider.find(templateId).map(o -> new OPTParser(o).parse()).map(w -> new Filter().filter(w)).orElse(null);
+    return testDataTemplateProvider
+        .find(templateId)
+        .map(o -> new OPTParser(o).parse())
+        .map(w -> new Filter().filter(w))
+        .orElse(null);
   }
 
   private TemplateDto map(OPERATIONALTEMPLATE operationaltemplate) {
     TemplateDto templateDto = new TemplateDto();
     templateDto.setTemplateId(operationaltemplate.getTemplateId().getValue());
     templateDto.setDescription(
-            operationaltemplate.getDescription().getDetailsArray()[0].getPurpose());
+        operationaltemplate.getDescription().getDetailsArray()[0].getPurpose());
     return templateDto;
   }
-
 }
