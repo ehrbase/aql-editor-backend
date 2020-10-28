@@ -23,11 +23,15 @@ import com.nedap.archie.rm.archetyped.Locatable;
 import com.nedap.archie.rm.composition.EventContext;
 import com.nedap.archie.rm.datavalues.quantity.DvInterval;
 import com.nedap.archie.rminfo.ArchieRMInfoLookup;
+import com.nedap.archie.rminfo.RMAttributeInfo;
 import com.nedap.archie.rminfo.RMTypeInfo;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.aqleditor.dto.ContainmentDto;
 import org.ehrbase.aqleditor.dto.FieldDto;
+import org.ehrbase.client.classgenerator.config.RmClassGeneratorConfig;
+import org.ehrbase.serialisation.util.SnakeCase;
+import org.ehrbase.util.reflection.ReflectionHelper;
 import org.ehrbase.webtemplate.model.WebTemplate;
 import org.ehrbase.webtemplate.model.WebTemplateNode;
 import org.ehrbase.webtemplate.parser.FlatPath;
@@ -36,12 +40,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
 public class ContainmentService {
 
   public static final ArchieRMInfoLookup ARCHIE_RM_INFO_LOOKUP = ArchieRMInfoLookup.getInstance();
+  private static final Map<Class<?>, RmClassGeneratorConfig> configMap =
+      ReflectionHelper.buildMap(RmClassGeneratorConfig.class);
 
   private TemplateService templateService;
 
@@ -73,17 +80,45 @@ public class ContainmentService {
         if (context.containmentQueue.size() > 1) {
           context.containmentQueue.remove();
         }
+      } else {
+        context.nodeQueue.push(childNode);
+        childNode.getChildren().forEach(n -> handleNext(context, n));
+        context.nodeQueue.remove();
       }
+
+
     } else {
-      FieldDto fieldDto = new FieldDto();
-      fieldDto.setName(childNode.getName());
-      fieldDto.setRmType(childNode.getRmType());
-      String relativAql = StringUtils.removeStart(childNode.getAqlPath(), context.aqlQueue.peek());
-      fieldDto.setAqlPath(new FlatPath(relativAql).format(false));
-      context.nodeQueue.push(childNode);
-      fieldDto.setHumanReadablePath(buildHumanReadablePath(context));
-      context.containmentQueue.peek().getFields().add(fieldDto);
-      context.nodeQueue.remove();
+      RMTypeInfo typeInfo = ARCHIE_RM_INFO_LOOKUP.getTypeInfo(childNode.getRmType());
+      RmClassGeneratorConfig rmClassGeneratorConfig = configMap.get(typeInfo.getJavaClass());
+      if (rmClassGeneratorConfig == null || !rmClassGeneratorConfig.isExpandField()) {
+        FieldDto fieldDto = new FieldDto();
+        fieldDto.setName(childNode.getName());
+        fieldDto.setRmType(childNode.getRmType());
+        String relativAql =
+            StringUtils.removeStart(childNode.getAqlPath(), context.aqlQueue.peek());
+        fieldDto.setAqlPath(new FlatPath(relativAql).format(false));
+        context.nodeQueue.push(childNode);
+        fieldDto.setHumanReadablePath(buildHumanReadablePath(context));
+        context.containmentQueue.peek().getFields().add(fieldDto);
+        context.nodeQueue.remove();
+      } else {
+        for (String fieldName : rmClassGeneratorConfig.getExpandFields()) {
+          RMAttributeInfo rmAttributeInfo =
+              typeInfo.getAttributes().get(new SnakeCase(fieldName).camelToSnake());
+          FieldDto fieldDto = new FieldDto();
+          fieldDto.setName(childNode.getName() + "::" + rmAttributeInfo.getRmName());
+          fieldDto.setRmType(rmAttributeInfo.getTypeNameInCollection());
+          String relativAql =
+              StringUtils.removeStart(childNode.getAqlPath(), context.aqlQueue.peek());
+          fieldDto.setAqlPath(
+              new FlatPath(relativAql + "/" + rmAttributeInfo.getRmName()).format(false));
+          context.nodeQueue.push(childNode);
+          fieldDto.setHumanReadablePath(
+              buildHumanReadablePath(context) + "/" + rmAttributeInfo.getRmName());
+          context.containmentQueue.peek().getFields().add(fieldDto);
+          context.nodeQueue.remove();
+        }
+      }
     }
   }
 
@@ -108,7 +143,7 @@ public class ContainmentService {
             || DvInterval.class.isAssignableFrom(typeInfo.getJavaClass()));
   }
 
-  private class Context {
+  private static class Context {
     Deque<WebTemplateNode> nodeQueue = new ArrayDeque<>();
     Deque<ContainmentDto> containmentQueue = new ArrayDeque<>();
     Deque<String> aqlQueue = new ArrayDeque<>();
