@@ -17,13 +17,11 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto;
+package org.ehrbase.aqleditor.dto.aql;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@Data
-public class TemplateDto {
-
-  private String templateId;
-  private String description;
-}
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "_type")
+@JsonSubTypes({@JsonSubTypes.Type(value = SelectFieldDto.class, name = "SelectField")})
+public interface SelectStatementDto {}

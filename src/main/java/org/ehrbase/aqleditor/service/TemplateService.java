@@ -19,7 +19,7 @@
 package org.ehrbase.aqleditor.service;
 
 import lombok.AllArgsConstructor;
-import org.ehrbase.aqleditor.dto.TemplateDto;
+import org.ehrbase.aqleditor.dto.template.TemplateDto;
 import org.ehrbase.webtemplate.filter.Filter;
 import org.ehrbase.webtemplate.model.WebTemplate;
 import org.ehrbase.webtemplate.parser.OPTParser;

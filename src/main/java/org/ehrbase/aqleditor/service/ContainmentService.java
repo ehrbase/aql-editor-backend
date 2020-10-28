@@ -27,8 +27,8 @@ import com.nedap.archie.rminfo.RMAttributeInfo;
 import com.nedap.archie.rminfo.RMTypeInfo;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.ehrbase.aqleditor.dto.ContainmentDto;
-import org.ehrbase.aqleditor.dto.FieldDto;
+import org.ehrbase.aqleditor.dto.containment.ContainmentDto;
+import org.ehrbase.aqleditor.dto.containment.FieldDto;
 import org.ehrbase.client.classgenerator.config.RmClassGeneratorConfig;
 import org.ehrbase.serialisation.util.SnakeCase;
 import org.ehrbase.util.reflection.ReflectionHelper;
@@ -85,7 +85,6 @@ public class ContainmentService {
         childNode.getChildren().forEach(n -> handleNext(context, n));
         context.nodeQueue.remove();
       }
-
 
     } else {
       RMTypeInfo typeInfo = ARCHIE_RM_INFO_LOOKUP.getTypeInfo(childNode.getRmType());

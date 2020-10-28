@@ -17,14 +17,13 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto;
+package org.ehrbase.aqleditor.dto.aql;
 
 import lombok.Data;
 
 @Data
-public class FieldDto {
-  private String name;
-  private String rmType;
-  private String aqlPath;
-  private String humanReadablePath;
+public class AqlDto {
+
+  private SelectDto select;
+  private ContainmentExpresionDto contains;
 }

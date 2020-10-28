@@ -17,17 +17,17 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto;
+package org.ehrbase.aqleditor.dto.aql;
 
 import lombok.Data;
+import org.ehrbase.client.aql.top.Direction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ContainmentDto {
+public class SelectDto {
 
-  private final List<ContainmentDto> children = new ArrayList<>();
-  private final List<FieldDto> fields = new ArrayList<>();
-  private String archetypeId;
+  private Integer topCount;
+  private Direction topDirection;
+  private List<SelectStatementDto> statement;
 }
