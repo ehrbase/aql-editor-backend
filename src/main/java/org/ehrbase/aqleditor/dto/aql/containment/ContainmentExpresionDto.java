@@ -17,7 +17,7 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.containment;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

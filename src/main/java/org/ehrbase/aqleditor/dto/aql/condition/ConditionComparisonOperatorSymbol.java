@@ -17,9 +17,8 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.condition;
 
-public enum ContainmentLogicalOperatorSymbol {
-  OR,
-  AND;
+public enum ConditionComparisonOperatorSymbol {
+    EQ,NEQ,GT_EQ,GT,LE_EQ,LE
 }

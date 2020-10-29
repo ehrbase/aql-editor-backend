@@ -17,14 +17,14 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.condition;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.List;
-
-@Data
-public class ContainmentLogicalOperator implements ContainmentExpresionDto {
-  ContainmentLogicalOperatorSymbol symbol;
-  List<ContainmentExpresionDto> values;
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "_type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SimpleValue.class, name = "Simple")
+})
+public interface Value {
 }

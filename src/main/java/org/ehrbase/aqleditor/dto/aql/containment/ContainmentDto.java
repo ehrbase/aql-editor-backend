@@ -17,17 +17,13 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.containment;
 
 import lombok.Data;
-import org.ehrbase.client.aql.top.Direction;
-
-import java.util.List;
 
 @Data
-public class SelectDto {
-
-  private Integer topCount;
-  private Direction topDirection;
-  private List<SelectStatementDto> statement;
+public class ContainmentDto implements ContainmentExpresionDto {
+  private int id;
+  private String archetypeId;
+  private ContainmentExpresionDto contains;
 }

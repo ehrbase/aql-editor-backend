@@ -19,8 +19,8 @@
 
 package org.ehrbase.aqleditor.aql.binder;
 
-import org.ehrbase.aqleditor.dto.aql.SelectFieldDto;
-import org.ehrbase.aqleditor.dto.aql.SelectStatementDto;
+import org.ehrbase.aqleditor.dto.aql.select.SelectFieldDto;
+import org.ehrbase.aqleditor.dto.aql.select.SelectStatementDto;
 import org.ehrbase.client.aql.containment.Containment;
 import org.ehrbase.client.aql.field.NativeSelectAqlField;
 import org.ehrbase.client.aql.field.SelectAqlField;
@@ -34,7 +34,7 @@ public class SelectBinder {
     SelectAqlField<Object> selectAqlField;
     if (dto instanceof SelectFieldDto) {
       selectAqlField =
-          new NativeSelectAqlField<Object>(
+          new NativeSelectAqlField<>(
               containmentMap.get(((SelectFieldDto) dto).getContainmentId()),
               ((SelectFieldDto) dto).getAqlPath(),
               Object.class);

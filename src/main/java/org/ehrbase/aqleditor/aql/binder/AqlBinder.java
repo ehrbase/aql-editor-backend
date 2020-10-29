@@ -34,11 +34,12 @@ import java.util.Map;
 public class AqlBinder {
 
   private final SelectBinder selectBinder = new SelectBinder();
-    private final ContainmentBinder containmentBinder = new ContainmentBinder();
+  private final ContainmentBinder containmentBinder = new ContainmentBinder();
+  private final WhereBinder whereBinder = new WhereBinder();
 
-    public EntityQuery<Record> bind(AqlDto aqlDto) {
+  public EntityQuery<Record> bind(AqlDto aqlDto) {
     Pair<ContainmentExpression, Map<Integer, Containment>> pair =
-            containmentBinder.buildContainment(aqlDto.getContains());
+        containmentBinder.buildContainment(aqlDto.getContains());
 
     if (aqlDto.getEhr() != null) {
       pair.getRight().put(aqlDto.getEhr().getContainmentId(), EhrFields.EHR_CONTAINMENT);
@@ -50,7 +51,9 @@ public class AqlBinder {
             .toArray(SelectAqlField[]::new);
 
     EntityQuery<Record> query = Query.buildEntityQuery(pair.getLeft(), selectAqlFields);
+    if (aqlDto.getWhere() != null) {
+      query.where(whereBinder.bind(aqlDto.getWhere(), pair.getRight()));
+    }
     return query;
   }
-
 }

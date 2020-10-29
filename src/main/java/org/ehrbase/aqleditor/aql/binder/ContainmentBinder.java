@@ -21,10 +21,10 @@ package org.ehrbase.aqleditor.aql.binder;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.ehrbase.aqleditor.dto.aql.ContainmentDto;
-import org.ehrbase.aqleditor.dto.aql.ContainmentExpresionDto;
-import org.ehrbase.aqleditor.dto.aql.ContainmentLogicalOperator;
-import org.ehrbase.aqleditor.dto.aql.ContainmentLogicalOperatorSymbol;
+import org.ehrbase.aqleditor.dto.aql.containment.ContainmentDto;
+import org.ehrbase.aqleditor.dto.aql.containment.ContainmentExpresionDto;
+import org.ehrbase.aqleditor.dto.aql.containment.ContainmentLogicalOperator;
+import org.ehrbase.aqleditor.dto.aql.containment.ContainmentLogicalOperatorSymbol;
 import org.ehrbase.client.aql.containment.Containment;
 import org.ehrbase.client.aql.containment.ContainmentExpression;
 

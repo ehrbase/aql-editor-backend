@@ -17,13 +17,12 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.condition;
 
 import lombok.Data;
 
 @Data
-public class ContainmentDto implements ContainmentExpresionDto {
-  private int id;
-  private String archetypeId;
-  private ContainmentExpresionDto contains;
+public class SimpleValue implements Value{
+
+  private   Object value;
 }

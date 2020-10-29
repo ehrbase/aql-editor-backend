@@ -17,18 +17,14 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.select;
 
 import lombok.Data;
-import org.ehrbase.aqleditor.dto.aql.condition.ConditionDto;
-import org.ehrbase.aqleditor.dto.aql.containment.ContainmentExpresionDto;
-import org.ehrbase.aqleditor.dto.aql.select.SelectDto;
 
 @Data
-public class AqlDto {
+public class SelectFieldDto implements SelectStatementDto {
 
-  private SelectDto select;
-  private EhrDto ehr;
-  private ContainmentExpresionDto contains;
-  private ConditionDto where;
+  private String name;
+  private String aqlPath;
+  private int containmentId;
 }
