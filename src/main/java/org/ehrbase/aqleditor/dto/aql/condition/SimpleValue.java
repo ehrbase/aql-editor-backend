@@ -22,7 +22,7 @@ package org.ehrbase.aqleditor.dto.aql.condition;
 import lombok.Data;
 
 @Data
-public class SimpleValue implements Value{
+public class SimpleValue implements Value {
 
-  private   Object value;
+  private Object value;
 }

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "_type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = SimpleValue.class, name = "Simple")
+  @JsonSubTypes.Type(value = SimpleValue.class, name = "Simple"),
+  @JsonSubTypes.Type(value = ParameterValue.class, name = "Parameter")
 })
-public interface Value {
-}
+public interface Value {}

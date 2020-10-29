@@ -19,8 +19,11 @@
 
 package org.ehrbase.aqleditor.aql.binder;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.ehrbase.aqleditor.dto.aql.AqlDto;
+import org.ehrbase.aqleditor.dto.aql.condition.ParameterValue;
+import org.ehrbase.client.aql.condition.Condition;
 import org.ehrbase.client.aql.containment.Containment;
 import org.ehrbase.client.aql.containment.ContainmentExpression;
 import org.ehrbase.client.aql.field.EhrFields;
@@ -31,6 +34,8 @@ import org.ehrbase.client.aql.record.Record;
 import org.ehrbase.client.aql.top.Direction;
 import org.ehrbase.client.aql.top.TopExpresion;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AqlBinder {
@@ -39,10 +44,10 @@ public class AqlBinder {
   private final ContainmentBinder containmentBinder = new ContainmentBinder();
   private final WhereBinder whereBinder = new WhereBinder();
 
-  public EntityQuery<Record> bind(AqlDto aqlDto) {
+  public Pair<EntityQuery<Record>, List<ParameterValue>> bind(AqlDto aqlDto) {
     Pair<ContainmentExpression, Map<Integer, Containment>> pair =
         containmentBinder.buildContainment(aqlDto.getContains());
-
+    ArrayList<ParameterValue> parameterValues = new ArrayList<>();
     if (aqlDto.getEhr() != null) {
       pair.getRight().put(aqlDto.getEhr().getContainmentId(), EhrFields.EHR_CONTAINMENT);
     }
@@ -54,13 +59,17 @@ public class AqlBinder {
 
     EntityQuery<Record> query = Query.buildEntityQuery(pair.getLeft(), selectAqlFields);
     if (aqlDto.getWhere() != null) {
-      query.where(whereBinder.bind(aqlDto.getWhere(), pair.getRight()));
+      Pair<Condition, List<ParameterValue>> conditionPair =
+          whereBinder.bind(aqlDto.getWhere(), pair.getRight());
+      query.where(conditionPair.getLeft());
+      parameterValues.addAll(conditionPair.getRight());
     }
-    if (Direction.FORWARD.equals(aqlDto.getSelect().getTopDirection())){
+    if (Direction.FORWARD.equals(aqlDto.getSelect().getTopDirection())) {
       query.top(TopExpresion.forward(aqlDto.getSelect().getTopCount()));
-    }else if (Direction.BACKWARD.equals(aqlDto.getSelect().getTopDirection())){
+    } else if (Direction.BACKWARD.equals(aqlDto.getSelect().getTopDirection())) {
       query.top(TopExpresion.backward(aqlDto.getSelect().getTopCount()));
     }
-    return query;
+
+    return new ImmutablePair<>(query, parameterValues);
   }
 }

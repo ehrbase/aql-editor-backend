@@ -19,38 +19,64 @@
 
 package org.ehrbase.aqleditor.aql.binder;
 
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ehrbase.aqleditor.dto.aql.condition.ConditionComparisonOperatorDto;
 import org.ehrbase.aqleditor.dto.aql.condition.ConditionDto;
+import org.ehrbase.aqleditor.dto.aql.condition.ParameterValue;
 import org.ehrbase.aqleditor.dto.aql.condition.SimpleValue;
 import org.ehrbase.client.aql.condition.Condition;
 import org.ehrbase.client.aql.containment.Containment;
+import org.ehrbase.client.aql.field.SelectAqlField;
+import org.ehrbase.client.aql.parameter.Parameter;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class WhereBinder {
   private final SelectBinder selectBinder = new SelectBinder();
 
-  public Condition bind(ConditionDto dto, Map<Integer, Containment> containmentMap) {
+  @SneakyThrows
+  public Pair<Condition, List<ParameterValue>> bind(
+      ConditionDto dto, Map<Integer, Containment> containmentMap) {
     Condition condition;
+    List<ParameterValue> parameterList = new ArrayList<>();
     if (dto instanceof ConditionComparisonOperatorDto) {
-      switch (((ConditionComparisonOperatorDto) dto).getSymbol()) {
-        case EQ:
-          condition =
-              Condition.equal(
+
+      final Class valueClass;
+      final Object value;
+      if (((ConditionComparisonOperatorDto) dto).getValue() instanceof SimpleValue) {
+        valueClass = Object.class;
+        value = ((SimpleValue) ((ConditionComparisonOperatorDto) dto).getValue()).getValue();
+      } else if (((ConditionComparisonOperatorDto) dto).getValue() instanceof ParameterValue) {
+        valueClass = Parameter.class;
+        value =
+            new Parameter<>(
+                ((ParameterValue) ((ConditionComparisonOperatorDto) dto).getValue()).getName());
+        parameterList.add(((ParameterValue) ((ConditionComparisonOperatorDto) dto).getValue()));
+      } else {
+        throw new RuntimeException();
+      }
+      Method method =
+          Condition.class.getMethod(
+              ((ConditionComparisonOperatorDto) dto).getSymbol().getJavaName(),
+              SelectAqlField.class,
+              valueClass);
+      condition =
+          (Condition)
+              method.invoke(
+                  null,
                   selectBinder.bind(
                       ((ConditionComparisonOperatorDto) dto).getStatement(), containmentMap),
-                  bindValue((SimpleValue) ((ConditionComparisonOperatorDto) dto).getValue()));
-          break;
-        default:
-          throw new RuntimeException();
-      }
+                  value);
+
     } else {
       throw new RuntimeException();
     }
-    return condition;
-  }
 
-  private Object bindValue(SimpleValue value) {
-    return value.getValue();
+    return new ImmutablePair<>(condition, parameterList);
   }
 }

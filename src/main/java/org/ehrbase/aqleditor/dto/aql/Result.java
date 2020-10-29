@@ -19,11 +19,17 @@
 
 package org.ehrbase.aqleditor.dto.aql;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 public class Result {
-  String q;
+  private String q;
+
+  @JsonProperty("query_parameters")
+  private Map<String, String> queryParameters;
 }

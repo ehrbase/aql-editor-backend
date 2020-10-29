@@ -20,12 +20,17 @@
 package org.ehrbase.aqleditor.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ehrbase.aqleditor.aql.binder.AqlBinder;
 import org.ehrbase.aqleditor.dto.aql.AqlDto;
 import org.ehrbase.aqleditor.dto.aql.Result;
+import org.ehrbase.aqleditor.dto.aql.condition.ParameterValue;
 import org.ehrbase.client.aql.query.EntityQuery;
 import org.ehrbase.client.aql.record.Record;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,8 +40,11 @@ public class AqlService {
 
   public Result buildAql(AqlDto aqlDto) {
 
-    EntityQuery<Record> query = aqlBinder.bind(aqlDto);
+    Pair<EntityQuery<Record>, List<ParameterValue>> pair = aqlBinder.bind(aqlDto);
 
-    return new Result(query.buildAql());
+    return new Result(
+        pair.getLeft().buildAql(),
+        pair.getRight().stream()
+            .collect(Collectors.toMap(ParameterValue::getName, ParameterValue::getType)));
   }
 }

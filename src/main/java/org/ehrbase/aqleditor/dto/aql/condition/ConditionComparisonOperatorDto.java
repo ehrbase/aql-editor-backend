@@ -23,11 +23,9 @@ import lombok.Data;
 import org.ehrbase.aqleditor.dto.aql.select.SelectStatementDto;
 
 @Data
-public class ConditionComparisonOperatorDto implements ConditionDto{
+public class ConditionComparisonOperatorDto implements ConditionDto {
 
-    private SelectStatementDto statement;
-    private ConditionComparisonOperatorSymbol symbol;
-    private Value value;
-
-
+  private SelectStatementDto statement;
+  private ConditionComparisonOperatorSymbol symbol;
+  private Value value;
 }
