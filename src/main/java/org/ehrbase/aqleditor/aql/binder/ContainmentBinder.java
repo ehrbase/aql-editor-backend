@@ -70,7 +70,7 @@ public class ContainmentBinder {
     return new ImmutablePair<>(containmentExpression, containmentMap);
   }
 
-  Pair<ContainmentExpression, Map<Integer, Containment>> buildLogicalOperator(
+  private Pair<ContainmentExpression, Map<Integer, Containment>> buildLogicalOperator(
       ContainmentLogicalOperatorSymbol symbol,
       Pair<ContainmentExpression, Map<Integer, Containment>> pair1,
       Pair<ContainmentExpression, Map<Integer, Containment>> pair2) {

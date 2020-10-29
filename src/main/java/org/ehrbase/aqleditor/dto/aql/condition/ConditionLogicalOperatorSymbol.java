@@ -19,21 +19,7 @@
 
 package org.ehrbase.aqleditor.dto.aql.condition;
 
-public enum ConditionComparisonOperatorSymbol {
-  EQ("equal"),
-  NEQ("notEqual"),
-  GT_EQ("greaterOrEqual"),
-  GT("greaterThan"),
-  LT_EQ("lessOrEqual"),
-  LT("lessThan");
-
-  private final String javaName;
-
-  ConditionComparisonOperatorSymbol(String javaName) {
-    this.javaName = javaName;
-  }
-
-  public String getJavaName() {
-    return javaName;
-  }
+public enum ConditionLogicalOperatorSymbol {
+  AND,
+  OR;
 }
