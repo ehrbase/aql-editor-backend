@@ -50,10 +50,7 @@ public class WhereBinder {
     return condition;
   }
 
-
-
   private Object bindValue(SimpleValue value) {
     return value.getValue();
   }
-
 }

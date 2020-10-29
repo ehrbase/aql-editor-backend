@@ -28,6 +28,8 @@ import org.ehrbase.client.aql.field.SelectAqlField;
 import org.ehrbase.client.aql.query.EntityQuery;
 import org.ehrbase.client.aql.query.Query;
 import org.ehrbase.client.aql.record.Record;
+import org.ehrbase.client.aql.top.Direction;
+import org.ehrbase.client.aql.top.TopExpresion;
 
 import java.util.Map;
 
@@ -53,6 +55,11 @@ public class AqlBinder {
     EntityQuery<Record> query = Query.buildEntityQuery(pair.getLeft(), selectAqlFields);
     if (aqlDto.getWhere() != null) {
       query.where(whereBinder.bind(aqlDto.getWhere(), pair.getRight()));
+    }
+    if (Direction.FORWARD.equals(aqlDto.getSelect().getTopDirection())){
+      query.top(TopExpresion.forward(aqlDto.getSelect().getTopCount()));
+    }else if (Direction.BACKWARD.equals(aqlDto.getSelect().getTopDirection())){
+      query.top(TopExpresion.backward(aqlDto.getSelect().getTopCount()));
     }
     return query;
   }
