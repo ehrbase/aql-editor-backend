@@ -22,9 +22,7 @@ package org.ehrbase.aqleditor.dto.aql;
 import lombok.Data;
 
 @Data
-public class AqlDto {
+public class EhrDto {
 
-  private SelectDto select;
-  private EhrDto ehr;
-  private ContainmentExpresionDto contains;
+  private int containmentId;
 }
