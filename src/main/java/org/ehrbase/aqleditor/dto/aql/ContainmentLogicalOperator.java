@@ -19,11 +19,12 @@
 
 package org.ehrbase.aqleditor.dto.aql;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
-public class Result {
-  String q;
+public class ContainmentLogicalOperator implements ContainmentExpresionDto {
+  ContainmentLogicalOperatorSymbol symbol;
+  List<ContainmentExpresionDto> values;
 }

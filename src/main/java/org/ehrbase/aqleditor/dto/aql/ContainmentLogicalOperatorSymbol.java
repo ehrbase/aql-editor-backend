@@ -19,11 +19,7 @@
 
 package org.ehrbase.aqleditor.dto.aql;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
-public class Result {
-  String q;
+public enum ContainmentLogicalOperatorSymbol {
+  OR,
+  AND;
 }
