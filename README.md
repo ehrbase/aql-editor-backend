@@ -6,7 +6,11 @@
 ```bash
 mvn clean install
 ```
+### Run 
 
+Replace the * with the current version, e.g. `aql-editor-backend-1.0-SNAPSHOT.jar`
+
+`java -jar application/target/aql-editor-backend-*.jar`
 ## Usage
 - Swagger: [Swagger UI](http://localhost:8090/aqleditor/swagger-ui/)
 - Postman: import `/postman/aqleditor.postman_collection.json`
