@@ -20,12 +20,11 @@
 package org.ehrbase.aqleditor.dto.aql.orderby;
 
 import lombok.Data;
-import org.ehrbase.aqleditor.dto.aql.select.SelectFieldDto;
 import org.ehrbase.aqleditor.dto.aql.select.SelectStatementDto;
 
 @Data
 public class OrderByExpressionDto {
 
-    private SelectStatementDto statement;
-    private OrderByExpressionSymbol symbol;
+  private SelectStatementDto statement;
+  private OrderByExpressionSymbol symbol;
 }

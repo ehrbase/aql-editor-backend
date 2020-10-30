@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
     path = "/rest/v1/aql",
     produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
-public class AqlController {
+public class AqlController extends BaseController {
 
   private AqlService aqlService;
 

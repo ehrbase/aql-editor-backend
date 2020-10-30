@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
     path = "/rest/v1/containment",
     produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
-public class ContainmentController {
+public class ContainmentController extends BaseController {
 
   private final ContainmentService containmentService;
 

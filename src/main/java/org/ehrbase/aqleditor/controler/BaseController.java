@@ -19,28 +19,28 @@
 
 package org.ehrbase.aqleditor.controler;
 
-import lombok.AllArgsConstructor;
-import org.ehrbase.aqleditor.dto.template.TemplateDto;
-import org.ehrbase.aqleditor.service.TemplateService;
-import org.springframework.http.MediaType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-@RestController
-@RequestMapping(
-    path = "/rest/v1/template",
-    produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
-public class TemplateController extends BaseController {
+@Slf4j
+public abstract class BaseController {
 
-  private final TemplateService templateService;
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<Map<String, String>> restErrorHandler(RuntimeException e) {
+    log.error(e.getMessage(), e);
+    return createErrorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
-  @GetMapping
-  public ResponseEntity<List<TemplateDto>> getAll() {
-    return ResponseEntity.ok(templateService.getAll());
+  protected ResponseEntity<Map<String, String>> createErrorResponse(
+      String message, HttpStatus status) {
+    Map<String, String> error = new HashMap<>();
+    error.put("error", message);
+    error.put("status", status.getReasonPhrase());
+    return new ResponseEntity<>(error, status);
   }
 }
