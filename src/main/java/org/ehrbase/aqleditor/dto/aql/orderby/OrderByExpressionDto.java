@@ -17,22 +17,15 @@
  *
  */
 
-package org.ehrbase.aqleditor.dto.aql;
+package org.ehrbase.aqleditor.dto.aql.orderby;
 
 import lombok.Data;
-import org.ehrbase.aqleditor.dto.aql.condition.ConditionDto;
-import org.ehrbase.aqleditor.dto.aql.containment.ContainmentExpresionDto;
-import org.ehrbase.aqleditor.dto.aql.orderby.OrderByExpressionDto;
-import org.ehrbase.aqleditor.dto.aql.select.SelectDto;
-
-import java.util.List;
+import org.ehrbase.aqleditor.dto.aql.select.SelectFieldDto;
+import org.ehrbase.aqleditor.dto.aql.select.SelectStatementDto;
 
 @Data
-public class AqlDto {
+public class OrderByExpressionDto {
 
-  private SelectDto select;
-  private EhrDto ehr;
-  private ContainmentExpresionDto contains;
-  private ConditionDto where;
-  private List<OrderByExpressionDto> orderBy;
+    private SelectStatementDto statement;
+    private OrderByExpressionSymbol symbol;
 }

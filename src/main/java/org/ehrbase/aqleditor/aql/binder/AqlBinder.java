@@ -19,6 +19,7 @@
 
 package org.ehrbase.aqleditor.aql.binder;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.ehrbase.aqleditor.dto.aql.AqlDto;
@@ -43,31 +44,45 @@ public class AqlBinder {
   private final SelectBinder selectBinder = new SelectBinder();
   private final ContainmentBinder containmentBinder = new ContainmentBinder();
   private final WhereBinder whereBinder = new WhereBinder();
+  private final OrderByBinder orderByBinder = new OrderByBinder();
 
   public Pair<EntityQuery<Record>, List<ParameterValue>> bind(AqlDto aqlDto) {
+
+    // build Containment
     Pair<ContainmentExpression, Map<Integer, Containment>> pair =
         containmentBinder.buildContainment(aqlDto.getContains());
-    ArrayList<ParameterValue> parameterValues = new ArrayList<>();
+    ContainmentExpression containment = pair.getLeft();
+    Map<Integer, Containment> containmentMap = pair.getRight();
     if (aqlDto.getEhr() != null) {
-      pair.getRight().put(aqlDto.getEhr().getContainmentId(), EhrFields.EHR_CONTAINMENT);
+      containmentMap.put(aqlDto.getEhr().getContainmentId(), EhrFields.EHR_CONTAINMENT);
     }
 
-    SelectAqlField<Object>[] selectAqlFields =
+    // build select
+    SelectAqlField<?>[] selectAqlFields =
         aqlDto.getSelect().getStatement().stream()
-            .map(s -> selectBinder.bind(s, pair.getRight()))
+            .map(s -> selectBinder.bind(s, containmentMap))
             .toArray(SelectAqlField[]::new);
+    EntityQuery<Record> query = Query.buildEntityQuery(containment, selectAqlFields);
 
-    EntityQuery<Record> query = Query.buildEntityQuery(pair.getLeft(), selectAqlFields);
+    // build where
+    ArrayList<ParameterValue> parameterValues = new ArrayList<>();
     if (aqlDto.getWhere() != null) {
       Pair<Condition, List<ParameterValue>> conditionPair =
-          whereBinder.bind(aqlDto.getWhere(), pair.getRight());
+          whereBinder.bind(aqlDto.getWhere(), containmentMap);
       query.where(conditionPair.getLeft());
       parameterValues.addAll(conditionPair.getRight());
     }
+
+    // build top
     if (Direction.FORWARD.equals(aqlDto.getSelect().getTopDirection())) {
       query.top(TopExpresion.forward(aqlDto.getSelect().getTopCount()));
     } else if (Direction.BACKWARD.equals(aqlDto.getSelect().getTopDirection())) {
       query.top(TopExpresion.backward(aqlDto.getSelect().getTopCount()));
+    }
+
+    // build order by
+    if (!CollectionUtils.isEmpty(aqlDto.getOrderBy())) {
+      query.orderBy(orderByBinder.bind(aqlDto.getOrderBy(), containmentMap));
     }
 
     return new ImmutablePair<>(query, parameterValues);
