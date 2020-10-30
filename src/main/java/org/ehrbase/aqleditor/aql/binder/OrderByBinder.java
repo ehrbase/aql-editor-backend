@@ -21,7 +21,6 @@ package org.ehrbase.aqleditor.aql.binder;
 
 import org.ehrbase.aqleditor.dto.aql.orderby.OrderByExpressionDto;
 import org.ehrbase.client.aql.containment.Containment;
-import org.ehrbase.client.aql.orderby.AndThen;
 import org.ehrbase.client.aql.orderby.OrderByExpression;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class OrderByBinder {
 
     OrderByExpression orderByExpression = bind(dtoList.get(0), containmentMap);
     for (int i = 1; i < dtoList.size(); i++) {
-      orderByExpression = new AndThen(orderByExpression, bind(dtoList.get(i), containmentMap));
+      orderByExpression = orderByExpression.andThen(bind(dtoList.get(i), containmentMap));
     }
     return orderByExpression;
   }
