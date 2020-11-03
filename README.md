@@ -23,6 +23,7 @@ Replace the * with the current version, e.g. `aql-editor-backend-1.0-SNAPSHOT.ja
     - set as correctly
     - remove unnecessary brackets
 - aql validation and meaningful error messages
+- select support function
 - add support to where:
     - not
     - exist

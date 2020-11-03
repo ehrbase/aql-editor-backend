@@ -20,11 +20,14 @@
 package org.ehrbase.aqleditor.service;
 
 import lombok.AllArgsConstructor;
+
 import org.apache.commons.lang3.tuple.Pair;
-import org.ehrbase.aqleditor.aql.binder.AqlBinder;
-import org.ehrbase.aqleditor.dto.aql.AqlDto;
+import org.ehrbase.aql.binder.AqlBinder;
+import org.ehrbase.aql.dto.AqlDto;
+
+import org.ehrbase.aql.dto.condition.ParameterValue;
 import org.ehrbase.aqleditor.dto.aql.Result;
-import org.ehrbase.aqleditor.dto.aql.condition.ParameterValue;
+
 import org.ehrbase.client.aql.query.EntityQuery;
 import org.ehrbase.client.aql.record.Record;
 import org.springframework.stereotype.Service;

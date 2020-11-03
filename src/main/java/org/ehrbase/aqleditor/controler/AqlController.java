@@ -20,7 +20,7 @@
 package org.ehrbase.aqleditor.controler;
 
 import lombok.AllArgsConstructor;
-import org.ehrbase.aqleditor.dto.aql.AqlDto;
+import org.ehrbase.aql.dto.AqlDto;
 import org.ehrbase.aqleditor.dto.aql.Result;
 import org.ehrbase.aqleditor.service.AqlService;
 import org.springframework.http.MediaType;
