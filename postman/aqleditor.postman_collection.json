@@ -119,6 +119,37 @@
       "response": []
     },
     {
+      "name": "buildAql ehr contains multip comps",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"select\": {\r\n        \"topCount\": 13,\r\n        \"topDirection\": \"FORWARD\",\r\n        \"statement\": [\r\n            {\r\n                \"_type\": \"SelectField\",\r\n                \"containmentId\": 1,\r\n                \"name\": \"Bericht ID::value\",\r\n                \"aqlPath\": \"/context/other_context[at0001]/items[at0002]/value/value\"\r\n            },\r\n                        {\r\n                \"_type\": \"SelectField\",\r\n                \"containmentId\": 0,\r\n                \"name\": \"ehr_id\",\r\n                \"aqlPath\": \"/ehr_id/value\"\r\n            }\r\n        ]\r\n    },\r\n    \"ehr\":{\r\n        \"containmentId\":0\r\n    }\r\n    ,\r\n    \"contains\": {\r\n        \"_type\": \"Containment\",\r\n        \"id\": 1,\r\n        \"archetypeId\": \"openEHR-EHR-COMPOSITION.report.v1\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8090",
+          "path": [
+            "aqleditor",
+            "rest",
+            "v1",
+            "aql"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "buildAql with simple where",
       "request": {
         "method": "POST",
