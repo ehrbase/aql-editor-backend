@@ -52,9 +52,10 @@ jobs:
             - run:
                   name: Update Snapshot Develop Version
                   description: |
-                      This automatically bumps the application version when there is a commit to release or develop branch
-                      If the commit is to the develop branch, there is a patch version bump, if the commit is to the
-                      release branch, we will bump the minor version
+                      This automatically bumps the application version when there is a commit to release or hotfix branch.
+                      The version is parsed from the branchname, where everything after /v separator (e.g. 1.0.0 would be parsed from
+                      release/v1.0.0) will be stored as a version number in pom file, and we will simultaneously create a tag that
+                      has the same version number, but it is there also prefixed with v (like this v1.0.0)
                   command: |
                       VERSION_NUMBER="$(echo $CIRCLE_BRANCH | awk -F'/v' '{print $2;}')"
                       echo "Updating the application version from the branch to ${VERSION_NUMBER}"
