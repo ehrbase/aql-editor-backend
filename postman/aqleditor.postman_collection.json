@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "1bda4ab4-4dd0-41b3-822d-66766c6b91ed",
+    "_postman_id": "38b3a98a-d7df-4c61-ba92-45adbb36e5d6",
     "name": "aqleditor",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -357,6 +357,40 @@
         "body": {
           "mode": "raw",
           "raw": "{\r\n    \"select\": {\r\n        \"topCount\": 13,\r\n        \"topDirection\": \"FORWARD\",\r\n        \"statement\": [\r\n            {\r\n                \"_type\": \"SelectField\",\r\n                \"containmentId\": 1,\r\n                \"name\": \"Bericht ID::value\",\r\n                \"aqlPath\": \"/context/other_context[at0001]/items[at0002]/value/value\"\r\n            },\r\n            {\r\n                \"_type\": \"SelectField\",\r\n                \"containmentId\": 2,\r\n                \"name\": \"Geschichte::value\",\r\n                \"aqlPath\": \"/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/value\"\r\n            },\r\n            {\r\n                \"_type\": \"SelectField\",\r\n                \"containmentId\": 3,\r\n                \"name\": \"Bezeichnung des Symptoms oder Anzeichens.::value\",\r\n                \"aqlPath\": \"/data[at0001]/events[at0002]/data[at0003]/items[at0022]/items[at0004]/value/value\"\r\n            },\r\n            {\r\n                \"_type\": \"SelectField\",\r\n                \"containmentId\": 4,\r\n                \"name\": \"Kommentar::value\",\r\n                \"aqlPath\": \"/data[at0001]/events[at0002]/data[at0042]/items[at0055]/value/value\"\r\n            }\r\n        ]\r\n    },\r\n    \"contains\": {\r\n        \"_type\": \"Containment\",\r\n        \"id\": 1,\r\n        \"archetypeId\": \"openEHR-EHR-COMPOSITION.report.v1\",\r\n        \"contains\": {\r\n            \"_type\": \"LogicalOperator\",\r\n            \"symbol\": \"AND\",\r\n            \"values\": [\r\n                {\r\n                    \"_type\": \"Containment\",\r\n                    \"id\": 2,\r\n                    \"archetypeId\": \"openEHR-EHR-OBSERVATION.story.v1\"\r\n                },\r\n                {\r\n                    \"_type\": \"LogicalOperator\",\r\n                    \"symbol\": \"OR\",\r\n                    \"values\": [\r\n                        {\r\n                    \"_type\": \"Containment\",\r\n                    \"id\": 3,\r\n                    \"archetypeId\": \"openEHR-EHR-OBSERVATION.symptom_sign_screening.v0\"\r\n                },\r\n                {\r\n                    \"_type\": \"Containment\",\r\n                    \"id\": 4,\r\n                    \"archetypeId\": \"openEHR-EHR-OBSERVATION.exposure_assessment.v0\"\r\n                }\r\n                    ]\r\n                }                \r\n            ]\r\n        }\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8090",
+          "path": [
+            "aqleditor",
+            "rest",
+            "v1",
+            "aql"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "parseAql",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"q\": \"Select TOP 13 FORWARD o0/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude as Systolic__magnitude, e/ehr_id/value as ehr_id from EHR e contains OBSERVATION o0[openEHR-EHR-OBSERVATION.sample_blood_pressure.v1] where (o0/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude >= $magnitude and o0/data[at0001]/events[at0002]/data[at0003]/items[at0004]/value/magnitude < 1.1)\",\r\n    \"query_parameters\": {\r\n        \"magnitude\": \"DOUBLE\"\r\n    }\r\n}",
           "options": {
             "raw": {
               "language": "json"
