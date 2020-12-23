@@ -33,7 +33,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <ehrbase.sdk.version>c6d0f68</ehrbase.sdk.version>
+        <ehrbase.sdk.version>8c95ced</ehrbase.sdk.version>
         <commons.lang3.version>3.8</commons.lang3.version>
         <jacoco.version>0.8.6</jacoco.version>
         <dependency-check.version>6.0.3</dependency-check.version>

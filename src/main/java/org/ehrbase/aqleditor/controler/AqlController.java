@@ -25,6 +25,7 @@ import org.ehrbase.aqleditor.dto.aql.Result;
 import org.ehrbase.aqleditor.service.AqlService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(
     path = "/rest/v1/aql",
-    produces = {MediaType.APPLICATION_JSON_VALUE})
+        produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class AqlController extends BaseController {
 
@@ -42,5 +43,10 @@ public class AqlController extends BaseController {
   @PostMapping
   public ResponseEntity<Result> buildAql(@RequestBody AqlDto aqlDto) {
     return ResponseEntity.ok(aqlService.buildAql(aqlDto));
+  }
+
+  @GetMapping
+  public ResponseEntity<AqlDto> parseAql(@RequestBody Result result) {
+    return ResponseEntity.ok(aqlService.parseAql(result));
   }
 }

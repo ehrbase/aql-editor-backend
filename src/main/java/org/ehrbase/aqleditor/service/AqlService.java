@@ -20,18 +20,20 @@
 package org.ehrbase.aqleditor.service;
 
 import lombok.AllArgsConstructor;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.ehrbase.aql.binder.AqlBinder;
 import org.ehrbase.aql.dto.AqlDto;
-
+import org.ehrbase.aql.dto.condition.ConditionComparisonOperatorDto;
+import org.ehrbase.aql.dto.condition.ConditionDto;
+import org.ehrbase.aql.dto.condition.ConditionLogicalOperatorDto;
 import org.ehrbase.aql.dto.condition.ParameterValue;
+import org.ehrbase.aql.parser.AqlToDtoParser;
 import org.ehrbase.aqleditor.dto.aql.Result;
-
 import org.ehrbase.client.aql.query.EntityQuery;
 import org.ehrbase.client.aql.record.Record;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +48,41 @@ public class AqlService {
     Pair<EntityQuery<Record>, List<ParameterValue>> pair = aqlBinder.bind(aqlDto);
 
     return new Result(
-        pair.getLeft().buildAql(),
-        pair.getRight().stream()
-            .collect(Collectors.toMap(ParameterValue::getName, ParameterValue::getType)));
+            pair.getLeft().buildAql(),
+            pair.getRight().stream()
+                    .collect(Collectors.toMap(ParameterValue::getName, ParameterValue::getType)));
+  }
+
+  public AqlDto parseAql(Result result) {
+    AqlDto aqlDto = new AqlToDtoParser().parse(result.getQ());
+    if (result.getQueryParameters() != null) {
+      List<ParameterValue> parameterValues = extractParameterValues(aqlDto.getWhere());
+      parameterValues.forEach(
+              p -> {
+                if (result.getQueryParameters().containsKey(p.getName())) {
+                  p.setType(result.getQueryParameters().get(p.getName()));
+                }
+              });
+    }
+    return aqlDto;
+  }
+
+  private List<ParameterValue> extractParameterValues(ConditionDto conditionDto) {
+    List<ParameterValue> values = new ArrayList<>();
+
+    if (conditionDto instanceof ConditionComparisonOperatorDto) {
+      if (((ConditionComparisonOperatorDto) conditionDto).getValue() instanceof ParameterValue) {
+        values.add((ParameterValue) ((ConditionComparisonOperatorDto) conditionDto).getValue());
+      }
+    } else if (conditionDto instanceof ConditionLogicalOperatorDto) {
+      values.addAll(
+              ((ConditionLogicalOperatorDto) conditionDto)
+                      .getValues().stream()
+                      .map(this::extractParameterValues)
+                      .flatMap(List::stream)
+                      .collect(Collectors.toList()));
+    }
+
+    return values;
   }
 }
