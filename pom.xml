@@ -75,21 +75,6 @@
       <version>${aql-editor-backend-starter.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.github.ehrbase.openEHR_SDK</groupId>
-      <artifactId>client</artifactId>
-      <version>${ehrbase.sdk.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.ehrbase.openEHR_SDK</groupId>
-      <artifactId>aql</artifactId>
-      <version>${ehrbase.sdk.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.ehrbase.openEHR_SDK</groupId>
-      <artifactId>test-data</artifactId>
-      <version>${ehrbase.sdk.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>${commons.lang3.version}</version>

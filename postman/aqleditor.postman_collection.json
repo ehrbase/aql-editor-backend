@@ -17,7 +17,7 @@
           }
         ],
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/template",
+          "raw": "http://localhost:8090/aqleditor/v1/template",
           "protocol": "http",
           "host": [
             "localhost"
@@ -39,7 +39,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/containment/ehrbase_blood_pressure_simple.de.v0",
+          "raw": "http://localhost:8090/aqleditor/v1/containment/ehrbase_blood_pressure_simple.de.v0",
           "protocol": "http",
           "host": [
             "localhost"
@@ -71,7 +71,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -102,7 +102,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -133,7 +133,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -164,7 +164,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -195,7 +195,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -226,7 +226,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -257,7 +257,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -288,7 +288,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -364,7 +364,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
@@ -398,7 +398,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8090/aqleditor/rest/v1/aql",
+          "raw": "http://localhost:8090/aqleditor/v1/aql",
           "protocol": "http",
           "host": [
             "localhost"
