@@ -19,7 +19,10 @@
 
 package org.ehrbase.aqleditor.service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.ehrbase.aql.binder.AqlBinder;
 import org.ehrbase.aql.dto.AqlDto;
@@ -74,7 +77,7 @@ public class AqlService {
     try {
       new AqlToDtoParser().parse(query.getQ());
     } catch (AqlParseException e) {
-      return QueryValidationResponse.builder().valid(false).message(e.getMessage()).build();
+      return buildResponse(e.getMessage());
     }
 
     return QueryValidationResponse.builder().valid(true).message("Query is valid").build();
@@ -97,5 +100,23 @@ public class AqlService {
     }
 
     return values;
+  }
+
+  public QueryValidationResponse buildResponse(String errorMessage) {
+    if (StringUtils.isEmpty(errorMessage)) {
+      return QueryValidationResponse.builder().valid(false).build();
+    }
+
+    Pattern pattern = Pattern.compile("^.*line (\\d+): char (\\d+).*$");
+    Matcher matcher = pattern.matcher(errorMessage);
+
+    if (matcher.matches()) {
+      String line = matcher.group(1);
+      String column = matcher.group(2);
+      return QueryValidationResponse.builder().valid(false).message(errorMessage)
+          .startColumn(column).startLine(line).build();
+    }
+
+    return QueryValidationResponse.builder().valid(false).message(errorMessage).build();
   }
 }

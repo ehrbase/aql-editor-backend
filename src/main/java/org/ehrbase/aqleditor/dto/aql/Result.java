@@ -21,11 +21,13 @@ package org.ehrbase.aqleditor.dto.aql;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Map;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class Result {
   private String q;
