@@ -16,5 +16,6 @@ public class QueryValidationResponse {
   private String message;
   private String startLine;
   private String startColumn;
+  private String error;
 
 }

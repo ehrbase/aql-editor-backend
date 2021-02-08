@@ -107,13 +107,14 @@ public class AqlService {
       return QueryValidationResponse.builder().valid(false).build();
     }
 
-    Pattern pattern = Pattern.compile("^.*line (\\d+): char (\\d+).*$");
+    Pattern pattern = Pattern.compile("^.*line (\\d+): char (\\d+) (.*).*$");
     Matcher matcher = pattern.matcher(errorMessage);
 
     if (matcher.matches()) {
       String line = matcher.group(1);
       String column = matcher.group(2);
-      return QueryValidationResponse.builder().valid(false).message(errorMessage)
+      String error = matcher.group(3);
+      return QueryValidationResponse.builder().valid(false).error(error).message(errorMessage)
           .startColumn(column).startLine(line).build();
     }
 
