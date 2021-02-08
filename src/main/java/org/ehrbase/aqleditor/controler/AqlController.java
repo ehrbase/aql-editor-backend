@@ -19,8 +19,10 @@
 
 package org.ehrbase.aqleditor.controler;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import org.ehrbase.aql.dto.AqlDto;
+import org.ehrbase.aqleditor.dto.aql.QueryValidationResponse;
 import org.ehrbase.aqleditor.dto.aql.Result;
 import org.ehrbase.aqleditor.service.AqlService;
 import org.springframework.http.MediaType;
@@ -48,5 +50,10 @@ public class AqlController extends BaseController {
   @GetMapping
   public ResponseEntity<AqlDto> parseAql(@RequestBody Result result) {
     return ResponseEntity.ok(aqlService.parseAql(result));
+  }
+
+  @PostMapping("/validate")
+  public ResponseEntity<QueryValidationResponse> validateAql(@RequestBody @NotNull Result query) {
+    return ResponseEntity.ok(aqlService.validateAql(query));
   }
 }

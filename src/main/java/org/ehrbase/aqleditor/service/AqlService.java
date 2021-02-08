@@ -27,7 +27,9 @@ import org.ehrbase.aql.dto.condition.ConditionComparisonOperatorDto;
 import org.ehrbase.aql.dto.condition.ConditionDto;
 import org.ehrbase.aql.dto.condition.ConditionLogicalOperatorDto;
 import org.ehrbase.aql.dto.condition.ParameterValue;
+import org.ehrbase.aql.parser.AqlParseException;
 import org.ehrbase.aql.parser.AqlToDtoParser;
+import org.ehrbase.aqleditor.dto.aql.QueryValidationResponse;
 import org.ehrbase.aqleditor.dto.aql.Result;
 import org.ehrbase.client.aql.query.EntityQuery;
 import org.ehrbase.client.aql.record.Record;
@@ -36,6 +38,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -65,6 +68,16 @@ public class AqlService {
               });
     }
     return aqlDto;
+  }
+
+  public QueryValidationResponse validateAql(Result query) {
+    try {
+      new AqlToDtoParser().parse(query.getQ());
+    } catch (AqlParseException e) {
+      return QueryValidationResponse.builder().valid(false).message(e.getMessage()).build();
+    }
+
+    return QueryValidationResponse.builder().valid(true).message("Query is valid").build();
   }
 
   private List<ParameterValue> extractParameterValues(ConditionDto conditionDto) {
