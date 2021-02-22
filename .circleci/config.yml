@@ -21,17 +21,23 @@ workflows:
                       branches:
                           only:
                               - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
-            - merge_to_nightly_build:
-                triggers:
-                    - schedule:
-                        cron: "0 21 * * *"
-                context: org-global
-                requires:
-                      - test
+    nightly_build:
+        triggers:
+            - schedule:
+                cron: "0 21 * * *"
                 filters:
                     branches:
                         only:
                             - master
+        jobs:
+            - test:
+               context:
+                   - org-global
+            - merge_to_nightly_build:
+                context:
+                   - org-global
+                requires:
+                      - test
 jobs:
     test:
         docker:
