@@ -21,6 +21,14 @@ workflows:
                       branches:
                           only:
                               - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
+            - merge_to_nightly_build:
+                context: org-global
+                requires:
+                      - test
+                filters:
+                    branches:
+                        only:
+                            - master
 jobs:
     test:
         docker:
@@ -96,6 +104,18 @@ jobs:
               echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
               ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=ehrbase/aql-editor:$TAG -Dmaven.test.skip
               docker push ehrbase/aql-editor:$TAG
+    
+    merge_to_nightly_build:
+      docker:
+            - image: circleci/openjdk:stretch
+      steps:
+        - run:
+              name: Merge master to nightly-builds branch
+              command: |
+                      - git checkout master
+                      - git pull
+                      - git checkout nightly-builds
+                      - git merge master
 
 commands:
     configure-git-for-ci-bot:
