@@ -22,6 +22,9 @@ workflows:
                           only:
                               - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
             - merge_to_nightly_build:
+                triggers:
+                    - schedule:
+                        cron: "0 21 * * *"
                 context: org-global
                 requires:
                       - test
