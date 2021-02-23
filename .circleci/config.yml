@@ -121,8 +121,6 @@ jobs:
         - run:
               name: Merge master to nightly-builds branch
               command: |
-                      - git checkout master
-                      - git pull
                       - git checkout nightly-builds
                       - git merge master
 
