@@ -125,6 +125,7 @@ jobs:
             - run:
                    name: Merge master to nightly-builds branch
                    command: |
+                       git init
                        git checkout nightly-builds
                        git merge master
                        exit 0
