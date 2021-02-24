@@ -22,13 +22,13 @@ workflows:
                           only:
                               - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
     nightly_build:
-        triggers:
-            - schedule:
-                cron: "* 13 * * *"
-                filters:
-                    branches:
-                        only:
-                            - nightly-builds
+        #triggers:
+        #    - schedule:
+        #        cron: "* 21 * * *"
+        #        filters:
+        #            branches:
+        #                only:
+        #                    - nightly-builds
         jobs:
             - test:
                context:
@@ -38,6 +38,10 @@ workflows:
                    - org-global
                 requires:
                       - test
+                filters:
+                      branches:
+                          only:
+                              - nightly-builds
 jobs:
     test:
         docker:
