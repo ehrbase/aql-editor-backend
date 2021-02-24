@@ -24,7 +24,7 @@ workflows:
     nightly_build:
         triggers:
             - schedule:
-                cron: "0 21 * * *"
+                cron: "52 12 * * *"
                 filters:
                     branches:
                         only:
@@ -118,11 +118,11 @@ jobs:
       docker:
             - image: circleci/openjdk:stretch
       steps:
-        - run:
-              name: Merge master to nightly-builds branch
-              command: |
-                      - git checkout nightly-builds
-                      - git merge master
+            - run:
+                   name: Merge master to nightly-builds branch
+                   command: |
+                      git checkout nightly-builds
+                      git merge master
 
 commands:
     configure-git-for-ci-bot:
