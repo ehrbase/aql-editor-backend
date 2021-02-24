@@ -30,9 +30,9 @@ workflows:
         #                only:
         #                    - nightly-builds
         jobs:
-        #    - test:
-        #       context:
-        #           - org-global
+            - test:
+               context:
+                   - org-global
             - merge_to_nightly_build:
                 context:
                    - org-global
