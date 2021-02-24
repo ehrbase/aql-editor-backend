@@ -24,7 +24,7 @@ workflows:
     nightly_build:
         triggers:
             - schedule:
-                cron: "52 12 * * *"
+                cron: "* 13 * * *"
                 filters:
                     branches:
                         only:
