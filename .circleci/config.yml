@@ -2,25 +2,25 @@ version: 2.1
 
 workflows:
     version: 2
-    build_and_test:
-        jobs:
-            - test:
-                  context: org-global
-            - tag-version:
-                  requires:
-                      - test
-                  filters:
-                      branches:
-                          only:
-                              - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+)$/
-            - build_and_deploy:
-                  context: org-global
-                  requires:
-                      - test
-                  filters:
-                      branches:
-                          only:
-                              - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
+    #build_and_test:
+    #    jobs:
+    #        - test:
+    #              context: org-global
+    #        - tag-version:
+    #              requires:
+    #                  - test
+    #              filters:
+    #                  branches:
+    #                      only:
+    #                          - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+)$/
+    #        - build_and_deploy:
+    #              context: org-global
+    #              requires:
+    #                  - test
+    #              filters:
+    #                  branches:
+    #                      only:
+    #                          - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
     nightly_build:
         #triggers:
         #    - schedule:
@@ -30,9 +30,9 @@ workflows:
         #                only:
         #                    - nightly-builds
         jobs:
-            - test:
-               context:
-                   - org-global
+        #    - test:
+        #       context:
+        #           - org-global
             - merge_to_nightly_build:
                 context:
                    - org-global
@@ -125,9 +125,9 @@ jobs:
             - run:
                    name: Merge master to nightly-builds branch
                    command: |
-                      git checkout nightly-builds
-                      git merge master
-
+                       git checkout nightly-builds
+                       git merge master
+                       exit 0
 commands:
     configure-git-for-ci-bot:
         steps:
