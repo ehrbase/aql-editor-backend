@@ -18,47 +18,45 @@
  */
 package org.ehrbase.aqleditor.service;
 
-import lombok.AllArgsConstructor;
-import org.ehrbase.aqleditor.dto.template.TemplateDto;
-import org.ehrbase.webtemplate.filter.Filter;
-import org.ehrbase.webtemplate.model.WebTemplate;
-import org.ehrbase.webtemplate.parser.OPTParser;
-import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import org.ehrbase.aqleditor.dto.template.TemplateDto;
+import org.ehrbase.openehr.sdk.webtemplate.filter.Filter;
+import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
+import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
+import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class TemplateService {
 
-  private static final TestDataTemplateProvider testDataTemplateProvider =
-      new TestDataTemplateProvider();
+    private static final TestDataTemplateProvider testDataTemplateProvider = new TestDataTemplateProvider();
 
-  public List<TemplateDto> getAll() {
-    return testDataTemplateProvider.listTemplateIds().stream()
-        .map(testDataTemplateProvider::find)
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .map(this::map)
-        .collect(Collectors.toList());
-  }
+    public List<TemplateDto> getAll() {
+        return testDataTemplateProvider.listTemplateIds().stream()
+                .map(testDataTemplateProvider::find)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
 
-  public WebTemplate getWebTemplate(String templateId) {
-    return testDataTemplateProvider
-        .find(templateId)
-        .map(o -> new OPTParser(o).parse())
-        .map(w -> new Filter().filter(w))
-        .orElse(null);
-  }
+    public WebTemplate getWebTemplate(String templateId) {
+        return testDataTemplateProvider
+                .find(templateId)
+                .map(o -> new OPTParser(o).parse())
+                .map(w -> new Filter().filter(w))
+                .orElse(null);
+    }
 
-  private TemplateDto map(OPERATIONALTEMPLATE operationaltemplate) {
-    TemplateDto templateDto = new TemplateDto();
-    templateDto.setTemplateId(operationaltemplate.getTemplateId().getValue());
-    templateDto.setDescription(
-        operationaltemplate.getDescription().getDetailsArray()[0].getPurpose());
-    return templateDto;
-  }
+    private TemplateDto map(OPERATIONALTEMPLATE operationaltemplate) {
+        TemplateDto templateDto = new TemplateDto();
+        templateDto.setTemplateId(operationaltemplate.getTemplateId().getValue());
+        templateDto.setDescription(
+                operationaltemplate.getDescription().getDetailsArray()[0].getPurpose());
+        return templateDto;
+    }
 }

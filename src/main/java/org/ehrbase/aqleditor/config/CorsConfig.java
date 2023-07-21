@@ -13,20 +13,20 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class CorsConfig {
 
-  private static final String BASE_PATH = "/**";
+    private static final String BASE_PATH = "/**";
 
-  private final CorsProperties corsProperties;
+    private final CorsProperties corsProperties;
 
-  @Bean
-  public CorsFilter createCorsFilter() {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    @Bean
+    public CorsFilter createCorsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-    corsConfiguration.setAllowCredentials(true);
-    corsConfiguration.setAllowedOrigins(corsProperties.getAllowedOrigins());
-    corsConfiguration.setAllowedMethods(Collections.singletonList(CorsConfiguration.ALL));
-    corsConfiguration.setAllowedHeaders(Collections.singletonList(CorsConfiguration.ALL));
-    source.registerCorsConfiguration(BASE_PATH, corsConfiguration);
-    return new CorsFilter(source);
-  }
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(corsProperties.getAllowedOrigins());
+        corsConfiguration.setAllowedMethods(Collections.singletonList(CorsConfiguration.ALL));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList(CorsConfiguration.ALL));
+        source.registerCorsConfiguration(BASE_PATH, corsConfiguration);
+        return new CorsFilter(source);
+    }
 }
