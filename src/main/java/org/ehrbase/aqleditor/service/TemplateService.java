@@ -52,6 +52,13 @@ public class TemplateService {
                 .orElse(null);
     }
 
+    public WebTemplate getRawWebTemplate(String templateId) {
+        return testDataTemplateProvider
+                .find(templateId)
+                .map(o -> new OPTParser(o).parse())
+                .orElse(null);
+    }
+
     private TemplateDto map(OPERATIONALTEMPLATE operationaltemplate) {
         TemplateDto templateDto = new TemplateDto();
         templateDto.setTemplateId(operationaltemplate.getTemplateId().getValue());

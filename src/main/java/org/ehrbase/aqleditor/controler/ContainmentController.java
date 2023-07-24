@@ -21,11 +21,16 @@ package org.ehrbase.aqleditor.controler;
 
 import lombok.AllArgsConstructor;
 import org.ehrbase.aqleditor.dto.containment.ContainmentDto;
+import org.ehrbase.aqleditor.dto.containment.ResolveInput;
+import org.ehrbase.aqleditor.dto.containment.ResolveOutput;
 import org.ehrbase.aqleditor.service.ContainmentService;
+import org.ehrbase.aqleditor.service.FromService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,9 +42,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContainmentController extends BaseController {
 
     private final ContainmentService containmentService;
+    private final FromService fromService;
 
     @GetMapping(path = "{templateId}")
     public ResponseEntity<ContainmentDto> getByTEmplateId(@PathVariable(value = "templateId") String templateId) {
         return ResponseEntity.ok(containmentService.buildContainment(templateId));
+    }
+
+    @PostMapping(path = {"resolve"})
+    public ResponseEntity<ResolveOutput> resolve(@RequestBody ResolveInput input) {
+
+        return ResponseEntity.ok(fromService.resolve(input));
     }
 }
