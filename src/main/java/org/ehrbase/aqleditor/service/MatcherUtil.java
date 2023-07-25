@@ -48,7 +48,7 @@ public class MatcherUtil {
 
         if (matches(path.getBaseNode(), root)) {
 
-            if (root.getChildren().isEmpty()) {
+            if (root.getChildren().isEmpty() || path.getNodes().size() == 1) {
 
                 return new ArrayList<>(Collections.singletonList(root));
             } else {
