@@ -9,7 +9,8 @@ public enum OrderContentmentTypes {
     CLUSTER(),
     OBSERVATION(CLUSTER),
     EVALUATION(CLUSTER),
-    COMPOSITION(OBSERVATION, EVALUATION);
+    COMPOSITION(OBSERVATION, EVALUATION),
+    EHR(COMPOSITION);
 
     private final List<OrderContentmentTypes> children;
 
@@ -23,7 +24,7 @@ public enum OrderContentmentTypes {
             return false;
         } else {
 
-            return parent.children.stream().anyMatch(p -> isChild(p, child));
+            return parent.children.contains(child) || parent.children.stream().anyMatch(p -> isChild(p, child));
         }
     }
 
