@@ -9,7 +9,7 @@ import org.ehrbase.openehr.sdk.aql.dto.containment.Containment;
 @Data
 public class ResolveInput {
 
-    private String aql;
+    private String aqlPath;
     private String templateId;
     private Containment from;
 }

@@ -38,7 +38,7 @@ public class FromService {
 
         WebTemplate rawWebTemplate = templateService.getRawWebTemplate(input.getTemplateId());
 
-        AqlPath parse = AqlPath.parse(input.getAql());
+        AqlPath parse = AqlPath.parse(input.getAqlPath());
         List<WebTemplateNode> nodes = MatcherUtil.find(parse, rawWebTemplate);
 
         ReverseListIterator reverseListIterator = new ReverseListIterator(nodes);
@@ -77,7 +77,7 @@ public class FromService {
 
         IdentifiedPath identifiedPath = new IdentifiedPath();
 
-        identifiedPath.setFrom(fromLocatable);
+        identifiedPath.setRoot(fromLocatable);
 
         AqlPath relativ = parse.removeStart(next.getAqlPathDto());
 

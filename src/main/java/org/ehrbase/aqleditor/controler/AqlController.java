@@ -20,12 +20,10 @@
 package org.ehrbase.aqleditor.controler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.ehrbase.aqleditor.dto.aql.Result;
 import org.ehrbase.aqleditor.service.AqlService;
 import org.ehrbase.openehr.sdk.aql.dto.AqlQuery;
-import org.ehrbase.openehr.sdk.aql.parser.serializer.AqlDtoSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,16 +42,14 @@ public class AqlController extends BaseController {
     private AqlService aqlService;
 
     @PostMapping
-    public ResponseEntity<Result> buildAql(@RequestBody String aqlDto) throws JsonProcessingException {
+    public ResponseEntity<Result> buildAql(@RequestBody AqlQuery aqlDto) throws JsonProcessingException {
 
-        ObjectMapper objectMapper = AqlDtoSerializer.getObjectMapper();
-        return ResponseEntity.ok(aqlService.buildAql(objectMapper.readValue(aqlDto, AqlQuery.class)));
+        return ResponseEntity.ok(aqlService.buildAql(aqlDto));
     }
 
     @GetMapping
-    public ResponseEntity<String> parseAql(@RequestBody Result result) throws JsonProcessingException {
+    public ResponseEntity<AqlQuery> parseAql(@RequestBody Result result) throws JsonProcessingException {
         AqlQuery aqlQuery = aqlService.parseAql(result);
-        ObjectMapper objectMapper = AqlDtoSerializer.getObjectMapper();
-        return ResponseEntity.ok(objectMapper.writeValueAsString(aqlQuery));
+        return ResponseEntity.ok(aqlQuery);
     }
 }
