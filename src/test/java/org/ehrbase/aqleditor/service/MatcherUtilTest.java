@@ -1,6 +1,7 @@
 package org.ehrbase.aqleditor.service;
 
 import java.util.List;
+import org.ehrbase.aqleditor.resolver.MatcherUtil;
 import org.ehrbase.openehr.sdk.aql.webtemplatepath.AqlPath;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplateNode;

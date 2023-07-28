@@ -6,10 +6,12 @@ import java.util.List;
  * @author Stefan Spiska
  */
 public enum OrderContentmentTypes {
-    CLUSTER(),
-    OBSERVATION(CLUSTER),
-    EVALUATION(CLUSTER),
-    COMPOSITION(OBSERVATION, EVALUATION),
+    ADMIN_ENTRY(),
+    OBSERVATION(),
+    EVALUATION(),
+    INSTRUCTION(),
+    ACTION(),
+    COMPOSITION(OBSERVATION, EVALUATION, ADMIN_ENTRY, INSTRUCTION, ACTION),
     EHR(COMPOSITION);
 
     private final List<OrderContentmentTypes> children;
