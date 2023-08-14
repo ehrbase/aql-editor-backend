@@ -24,6 +24,6 @@ import lombok.Data;
 @Data
 public class TemplateDto {
 
-  private String templateId;
-  private String description;
+    private String templateId;
+    private String description;
 }

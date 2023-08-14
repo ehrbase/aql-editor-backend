@@ -19,6 +19,7 @@
 
 package org.ehrbase.aqleditor.config;
 
+import java.util.Collections;
 import org.ehrbase.aqleditor.controler.BaseController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,24 +31,20 @@ import springfox.documentation.service.ParameterType;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.util.Collections;
-
 @Configuration
 public class SpringFoxConfig {
-  @Bean
-  public Docket api() {
-    return new Docket(DocumentationType.SWAGGER_2)
-        .globalRequestParameters(
-            Collections.singletonList(
-                new RequestParameterBuilder()
-                    .in(ParameterType.HEADER)
-                    .name("Accept-Language")
-                    .required(false)
-                    .query(param -> param.model(model -> model.scalarModel(ScalarType.STRING)))
-                    .build()))
-        .select()
-        .apis(RequestHandlerSelectors.basePackage(BaseController.class.getPackageName()))
-        .paths(PathSelectors.any())
-        .build();
-  }
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .globalRequestParameters(Collections.singletonList(new RequestParameterBuilder()
+                        .in(ParameterType.HEADER)
+                        .name("Accept-Language")
+                        .required(false)
+                        .query(param -> param.model(model -> model.scalarModel(ScalarType.STRING)))
+                        .build()))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(BaseController.class.getPackageName()))
+                .paths(PathSelectors.any())
+                .build();
+    }
 }

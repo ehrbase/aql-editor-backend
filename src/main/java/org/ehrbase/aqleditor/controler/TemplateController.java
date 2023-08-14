@@ -19,28 +19,35 @@
 
 package org.ehrbase.aqleditor.controler;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.ehrbase.aqleditor.dto.template.TemplateDto;
 import org.ehrbase.aqleditor.service.TemplateService;
+import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(
-    path = "/rest/v1/template",
-    produces = {MediaType.APPLICATION_JSON_VALUE})
+        path = "/rest/v1/template",
+        produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class TemplateController extends BaseController {
 
-  private final TemplateService templateService;
+    private final TemplateService templateService;
 
-  @GetMapping
-  public ResponseEntity<List<TemplateDto>> getAll() {
-    return ResponseEntity.ok(templateService.getAll());
-  }
+    @GetMapping
+    public ResponseEntity<List<TemplateDto>> getAll() {
+        return ResponseEntity.ok(templateService.getAll());
+    }
+
+    @GetMapping(path = "{template_Id}")
+    public ResponseEntity<WebTemplate> get(@PathVariable(value = "template_Id") String templateId) {
+
+        return ResponseEntity.ok(templateService.getWebTemplate(templateId));
+    }
 }
